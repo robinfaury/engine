@@ -20,5 +20,5 @@ mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64"
 
-"%compiler%\msbuild" "testGL.sln" /p:Configuration=Debug /p:Platform="x64"
-"%compiler%\msbuild" "testGL.sln" /p:Configuration=Release /p:Platform="x64"
+"%compiler%\msbuild" "engine.sln" /p:Configuration=Debug /p:Platform="x64"
+"%compiler%\msbuild" "engine.sln" /p:Configuration=Release /p:Platform="x64"
