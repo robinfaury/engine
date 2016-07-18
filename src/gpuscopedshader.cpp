@@ -1,4 +1,4 @@
-#include "gpushader.h"
+#include "gpuscopedshader.h"
 
 gpuScopedShader::gpuScopedShader()
 	: programName_(0) {
@@ -19,10 +19,10 @@ void gpuScopedShader::create(const char* vs, const char* fs) {
 	glLinkProgram(programName_);
 
 #ifdef _DEBUG
-	GLint success;
-	glGetProgramiv(programName_, GL_LINK_STATUS, &success);
-	if (!success) {
+	glGetProgramiv(programName_, GL_LINK_STATUS, &success_);
+	if (!success_) {
 		glGetProgramInfoLog(programName_, 512, nullptr, logProgram_);
+		printf("%s", logProgram_);
 	}
 #endif
 
@@ -32,23 +32,38 @@ void gpuScopedShader::create(const char* vs, const char* fs) {
 	glUseProgram(programName_);
 }
 
+void gpuScopedShader::bind() {
+	glUseProgram(programName_);
+}
+
+void gpuScopedShader::release() {
+	glUseProgram(0);
+}
+
 GLuint gpuScopedShader::compileShader(const char* shader, GLuint shaderType) {
 	GLuint shaderID = glCreateShader(shaderType);
 	glShaderSource(shaderID, 1, &shader, nullptr);
 	glCompileShader(shaderID);
 
 #ifdef _DEBUG
-	GLint success;
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
-	if (!success) {
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success_);
+	if (!success_) {
 		if (shaderType == GL_VERTEX_SHADER) {
 			glGetShaderInfoLog(shaderID, 512, nullptr, logVs_);
+			printf("%s", logVs_);
 		}
 		else if (shaderType == GL_FRAGMENT_SHADER) {
 			glGetShaderInfoLog(shaderID, 512, nullptr, logFs_);
+			printf("%s", logFs_);
 		}
 	}
 #endif
+
+	return shaderID;
+}
+
+bool gpuScopedShader::isLink() {
+	return success_;
 }
 
 gpuScopedShader::~gpuScopedShader() {

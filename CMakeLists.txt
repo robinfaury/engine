@@ -4,19 +4,26 @@ SET(EXE_NAME "engine")
 
 PROJECT(${EXE_NAME})
 
-SET(EXECUTABLE_OUTPUT bin / ${CMAKE_BUILD_TYPE})
+ADD_EXECUTABLE(${EXE_NAME} src/main.cpp)
 
-FILE (GLOB_RECURSE sourceFiles src/*)
-ADD_EXECUTABLE(${EXE_NAME} ${sourceFiles})
+INCLUDE_DIRECTORIES("C:/lib/glm")
 
-INCLUDE_DIRECTORIES("./ThirdParties/GLFW/include")
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/GLFW/build/src/Debug/glfw3)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/GLFW/build/src/Release/glfw3)
+INCLUDE_DIRECTORIES("C:/lib/glfw/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/glfw/lib/Release/glfw3.lib)
 
-INCLUDE_DIRECTORIES("./ThirdParties/GLEW/include")
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/GLEW/lib/glew32)
+INCLUDE_DIRECTORIES("C:/lib/glew/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/glew/lib/glew32.lib)
 
-INCLUDE_DIRECTORIES("./ThirdParties/GLM")
+INCLUDE_DIRECTORIES("C:/lib/assimp/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/assimp/lib/Release/assimp-vc140-mt.lib)
+
+add_subdirectory(src/gpu)
+INCLUDE_DIRECTORIES("./src/gpu/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} gpu)
+
+add_subdirectory(src/loader)
+INCLUDE_DIRECTORIES("./src/loader/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} loader)
 
 FIND_PACKAGE(OpenGL REQUIRED)
 INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
