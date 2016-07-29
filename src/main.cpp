@@ -1,6 +1,7 @@
 #include <gpu/gpuprogram.h>
 #include <gpu/gpugeometry.h>
 #include <loader/mesh.h>
+#include <loader/image.h>
 #include <iostream>
 #include <GLFW/glfw3.h>
 
@@ -90,6 +91,8 @@ void main() {
 	{
 		Gpu::GpuProgram baker(vsBakerPosition, fsBakerPosition);
 		Loader::Mesh cube("../res/cube.fbx");
+		Loader::Image img;
+		img.open("../res/image.png");
 
 		while (!glfwWindowShouldClose(window))
 		{
