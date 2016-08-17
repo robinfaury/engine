@@ -1,4 +1,4 @@
-#include "..\include\gpu\gpugeometry.h"
+#include <gpu\gpugeometry.h>
 
 namespace Gpu {
 

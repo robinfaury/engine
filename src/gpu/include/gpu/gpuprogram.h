@@ -15,8 +15,18 @@ namespace Gpu {
 			void bind() {glUseProgram(program_->name_); OGLERROR;}
 			void release() {glUseProgram(0); OGLERROR;}
 
-			//void operator[] (const char* name) {}
-			//void operator= (float data);
+			class UniformBinding {
+			public:
+				UniformBinding(GLint location) : location_(location) {}
+				void operator= (float data) { glUniform1f(location_, data); OGLERROR; }
+				void operator= (float* data) { glUniformMatrix4fv(location_, 1, GL_FALSE, data); OGLERROR; }
+			private:
+				GLint location_;
+			};
+
+			UniformBinding operator[] (const char* name) {
+				return UniformBinding(glGetUniformLocation(program_->name_, name));
+			}
 
 		private:
 			GpuProgram* program_;
@@ -34,7 +44,7 @@ namespace Gpu {
 
 		~GpuProgram();
 
-	public:
+	private:
 		GLuint name_;
 #ifdef _DEBUG
 		GLint success_;

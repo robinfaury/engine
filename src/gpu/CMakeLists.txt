@@ -13,3 +13,5 @@ set(SOURCES
 
 INCLUDE_DIRECTORIES("include")
 ADD_LIBRARY(gpu ${SOURCES})
+
+INCLUDE_DIRECTORIES("../loader/include")

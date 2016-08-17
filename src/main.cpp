@@ -116,16 +116,20 @@ void main() {
 		Loader::Image img;
 		img.open("../res/image.png");
 
+		float alpha = 0.f;
 		while (!glfwWindowShouldClose(window))
 		{
+			alpha += 0.0001f;
 			glClearColor(0.1f, 0.0f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			Gpu::GpuProgram::ScopedGpuProgramBinder binder(&baker);
 
-			glm::mat4 mcam = glm::lookAt(glm::vec3(20.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+			glm::mat4 mcam = glm::lookAt(glm::vec3(20.f, 1.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 			glm::mat4 mproj = glm::perspective(45.f, 1.f, 0.1f, 100.f);
-			glm::mat4 MVP = mproj * mcam;
+			glm::mat4 MVP = mproj * mcam * glm::rotate(glm::mat4(), alpha, glm::vec3(0.f, 1.f, 0.f));
+			binder["mvp"] = &MVP[0][0];
+
 			//glUniformMatrix4fv(glGetUniformLocation(baker.name_, "mvp"), 1, GL_FALSE, &MVP[0][0]); //TODO: Bind uniform program
 
 			cube.draw();
