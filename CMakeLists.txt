@@ -12,7 +12,7 @@ INCLUDE_DIRECTORIES("./lib/glfw/include")
 TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/glfw/lib/release/glfw3.lib)
 
 INCLUDE_DIRECTORIES("./lib/glew/include")
-TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/glew/lib/glew32.lib)
+TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/glew/lib/release/glew32.lib)
 
 INCLUDE_DIRECTORIES("./lib/assimp/include")
 TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/assimp/lib/release/assimp-vc140-mt.lib)

@@ -14,6 +14,10 @@ namespace Gpu {
 			~ScopedGpuProgramBinder() { release(); }
 			void bind() {glUseProgram(program_->name_); OGLERROR;}
 			void release() {glUseProgram(0); OGLERROR;}
+
+			//void operator[] (const char* name) {}
+			//void operator= (float data);
+
 		private:
 			GpuProgram* program_;
 		};
@@ -30,7 +34,7 @@ namespace Gpu {
 
 		~GpuProgram();
 
-	private:
+	public:
 		GLuint name_;
 #ifdef _DEBUG
 		GLint success_;
