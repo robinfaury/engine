@@ -21,11 +21,11 @@ INCLUDE_DIRECTORIES("C:/lib/FreeImage/include")
 TARGET_LINK_LIBRARIES(${EXE_NAME} C:/lib/FreeImage/lib/release/FreeImage.lib)
 
 add_subdirectory(src/gpu)
-INCLUDE_DIRECTORIES("C:/src/gpu/include")
+INCLUDE_DIRECTORIES("./src/gpu/include")
 TARGET_LINK_LIBRARIES(${EXE_NAME} gpu)
 
 add_subdirectory(src/loader)
-INCLUDE_DIRECTORIES("C:/src/loader/include")
+INCLUDE_DIRECTORIES("./src/loader/include")
 TARGET_LINK_LIBRARIES(${EXE_NAME} loader)
 
 FIND_PACKAGE(OpenGL REQUIRED)

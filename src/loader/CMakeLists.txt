@@ -9,6 +9,7 @@ set(SOURCES
 )
 
 INCLUDE_DIRECTORIES("include")
+INCLUDE_DIRECTORIES("../gpu/include")
 ADD_LIBRARY(loader ${SOURCES})
 
 
