@@ -10,9 +10,9 @@ namespace Gpu {
 		class ScopedGpuProgramBinder : public GpuBinder {
 		public:
 			ScopedGpuProgramBinder() = delete;
-			ScopedGpuProgramBinder(GpuProgram* program) : program_(program) { bind(); }
+			ScopedGpuProgramBinder(const GpuProgram& program) : program_(program) { bind(); }
 			~ScopedGpuProgramBinder() { release(); }
-			void bind() {glUseProgram(program_->name_); OGLERROR;}
+			void bind() {glUseProgram(program_.name_); OGLERROR;}
 			void release() {glUseProgram(0); OGLERROR;}
 
 			class UniformBinding {
@@ -25,11 +25,11 @@ namespace Gpu {
 			};
 
 			UniformBinding operator[] (const char* name) {
-				return UniformBinding(glGetUniformLocation(program_->name_, name));
+				return UniformBinding(glGetUniformLocation(program_.name_, name));
 			}
 
 		private:
-			GpuProgram* program_;
+			const GpuProgram& program_;
 		};
 
 

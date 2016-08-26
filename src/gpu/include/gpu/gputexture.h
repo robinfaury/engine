@@ -10,10 +10,20 @@ namespace Gpu {
 		/*********BINDER***********/
 		class ScopedGpuTextureBinder : public GpuBinder {
 		public:
-			ScopedGpuTextureBinder();
+			ScopedGpuTextureBinder() = delete;
+			ScopedGpuTextureBinder(const GpuTexture& texture, GLuint activeTexture = 0) 
+				: texture_(texture), activeTexture_(activeTexture) 
+				{ bind(); }
 			~ScopedGpuTextureBinder() { release(); }
-			void bind() {  OGLERROR; }
-			void release() { OGLERROR; }
+			void bind() { 
+				glActiveTexture(GL_TEXTURE0 + activeTexture_); OGLERROR;
+				glBindTexture(GL_TEXTURE_2D, texture_.name_); OGLERROR; }
+			void release() { 
+				glActiveTexture(GL_TEXTURE0 + activeTexture_); OGLERROR;
+				glBindTexture(GL_TEXTURE_2D, 0); OGLERROR; }
+		private:
+			const GpuTexture& texture_;
+			GLuint activeTexture_;
 		};
 
 

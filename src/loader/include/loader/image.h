@@ -6,27 +6,27 @@ namespace Loader {
 
 	class Image {
 	public:
-		Image();
-		Image(const char* path);
-		~Image();
-
-		bool open(const char* path);
-
-		FREE_IMAGE_FORMAT format();
-		unsigned int width();
-		unsigned int height();
-
-		BYTE* bits();
-
-	private:
-		FREE_IMAGE_FORMAT format_;
+		BYTE* bits_;
+		FIBITMAP* dib_;
+		FREE_IMAGE_FORMAT fif_;
 		unsigned int width_;
 		unsigned int height_;
+		unsigned int bpp_;
 
-		BYTE* bits_;
-
-		FIBITMAP* imagePtr_;
-
+		Image(char* path) {
+			fif_ = FIF_UNKNOWN;
+			fif_ = FreeImage_GetFileType(path, 0);
+			if (fif_ == FIF_UNKNOWN) {
+				fif_ = FreeImage_GetFIFFromFilename(path);
+			}
+			if ((fif_ != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif_)) {
+				dib_ = FreeImage_Load(fif_, path);
+				width_ = FreeImage_GetWidth(dib_);
+				height_ = FreeImage_GetHeight(dib_);
+				bits_ = FreeImage_GetBits(dib_);
+				bpp_ = FreeImage_GetBPP(dib_);
+			}
+		}
 	};
 
 }

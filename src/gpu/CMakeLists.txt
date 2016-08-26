@@ -3,12 +3,15 @@ set(SOURCES
 	include/gpu/gpubinder.h
 	include/gpu/gpugeometry.h
 	include/gpu/gpuprogram.h
+	include/gpu/gpustate.h
 	include/gpu/gputexture.h
 	
 	src/gpubinder.cpp
 	src/gpugeometry.cpp
 	src/gpuprogram.cpp
+	src/gpustate.cpp
 	src/gputexture.cpp
+	
 )
 
 INCLUDE_DIRECTORIES("include")

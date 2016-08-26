@@ -1,5 +1,7 @@
+#include <gpu/gpustate.h>
 #include <gpu/gpuprogram.h>
 #include <gpu/gpugeometry.h>
+#include <gpu/gputexture.h>
 #include <loader/mesh.h>
 #include <loader/image.h>
 #include <iostream>
@@ -52,10 +54,12 @@ const char *fsBakerPosition =
 
 const char *fsbasic =
 "#version 330 core\n"
+"uniform sampler2D texture_0;"
+"in vec2 texCoord;\n"
 "out vec4 oColor0;\n"
 "void main()\n"
 "{\n"
-"	oColor0 = vec4(1.0, 0.0, 1.0, 1.0);\n"
+"	oColor0 = texture(texture_0, texCoord);\n"
 "}\n";
 
 
@@ -111,26 +115,26 @@ void main() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	{
+		Gpu::gpuActiveState(GL_DEPTH_TEST);
 		Gpu::GpuProgram baker(vsbasic, fsbasic);
 		Loader::Mesh cube("../res/cube.fbx");
-		Loader::Image img;
-		img.open("../res/image.png");
+		Loader::Image img("../res/image.png");
+		Gpu::GpuTexture gpuImg(img);
 
 		float alpha = 0.f;
 		while (!glfwWindowShouldClose(window))
 		{
-			alpha += 0.0001f;
+			alpha += 0.01f;
 			glClearColor(0.1f, 0.0f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Gpu::GpuProgram::ScopedGpuProgramBinder binder(&baker);
+			Gpu::GpuProgram::ScopedGpuProgramBinder binder(baker);
+			Gpu::GpuTexture::ScopedGpuTextureBinder texBinder(gpuImg);
 
-			glm::mat4 mcam = glm::lookAt(glm::vec3(20.f, 1.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+			glm::mat4 mcam = glm::lookAt(glm::vec3(20.f, 20.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 			glm::mat4 mproj = glm::perspective(45.f, 1.f, 0.1f, 100.f);
 			glm::mat4 MVP = mproj * mcam * glm::rotate(glm::mat4(), alpha, glm::vec3(0.f, 1.f, 0.f));
 			binder["mvp"] = &MVP[0][0];
-
-			//glUniformMatrix4fv(glGetUniformLocation(baker.name_, "mvp"), 1, GL_FALSE, &MVP[0][0]); //TODO: Bind uniform program
 
 			cube.draw();
 
